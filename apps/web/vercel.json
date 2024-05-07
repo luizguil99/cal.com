@@ -6,7 +6,7 @@
     },
     {
       "path": "/api/tasks/cron",
-      "schedule": "* *"
+      "schedule": "* * * * *"
     },
     {
       "path": "/api/tasks/cleanup",
