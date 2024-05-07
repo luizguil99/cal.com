@@ -23,18 +23,15 @@ runs:
     - name: Install Yarn 3.4.1
       run: npm install -g yarn@3.4.1
 
-    # Step 2: Use Node version specified in the input
+    # Step 2: Add Yarn 3.4.1 to PATH
+    - name: Add Yarn 3.4.1 to PATH
+      run: echo "::add-path::/path/to/yarn/3.4.1"
+
+    # Step 3: Use Node version specified in the input
     - name: Use Node ${{ inputs.node_version }}
       uses: buildjet/setup-node@v3
       with:
         node-version: ${{ inputs.node_version }}
-
-    # Step 3: Expose yarn config
-    - name: Expose yarn config as "$GITHUB_OUTPUT"
-      id: yarn-config
-      shell: bash
-      run: |
-        echo "CACHE_FOLDER=$(yarn config get cacheFolder)" >> $GITHUB_OUTPUT
 
     # Step 4: Restore yarn cache
     - name: Restore yarn cache
