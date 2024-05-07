@@ -11,5 +11,12 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: ./.github/actions/dangerous-git-checkout
-      - uses: ./.github/actions/yarn-install
+      - name: Install Yarn 3.4.1
+        run: |
+          curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 3.4.1
+          export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+          yarn --version
+      - name: Run Yarn install
+        run: yarn install
+
 
