@@ -57,15 +57,18 @@ runs:
         key: ${{ runner.os }}-yarn-install-state-cache-${{ hashFiles('yarn.lock', '.yarnrc.yml') }}
 
     - name: Install dependencies
-      shell: bash
-      run: |
-        yarn install --inline-builds
-        yarn prisma generate
-      env:
-        # CI optimizations. Overrides yarnrc.yml options (or their defaults) in the CI action.
-        YARN_ENABLE_IMMUTABLE_INSTALLS: "false" # So it doesn't try to remove our private submodule deps
-        YARN_ENABLE_GLOBAL_CACHE: "false" # Use local cache folder to keep downloaded archives
-        YARN_INSTALL_STATE_PATH: .yarn/ci-cache/install-state.gz # Very small speedup when lock does not change
-        YARN_NM_MODE: "hardlinks-local" # Reduce node_modules size
-        # Other environment variables
-        HUSKY: "0" # By default do not run HUSKY install
+  shell: bash
+  run: |
+    curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 3.4.1
+    export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+    yarn install --inline-builds
+    yarn prisma generate
+  env:
+    # CI optimizations. Overrides yarnrc.yml options (or their defaults) in the CI action.
+    YARN_ENABLE_IMMUTABLE_INSTALLS: "false" # So it doesn't try to remove our private submodule deps
+    YARN_ENABLE_GLOBAL_CACHE: "false" # Use local cache folder to keep downloaded archives
+    YARN_INSTALL_STATE_PATH: .yarn/ci-cache/install-state.gz # Very small speedup when lock does not change
+    YARN_NM_MODE: "hardlinks-local" # Reduce node_modules size
+    # Other environment variables
+    HUSKY: "0" # By default do not run HUSKY install
+
